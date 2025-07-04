@@ -29,4 +29,4 @@ jobs:
       - name: Merge main into develop
         run: |
           git merge origin/main --allow-unrelated-histories
-          git push
+          git push --force-with-lease
