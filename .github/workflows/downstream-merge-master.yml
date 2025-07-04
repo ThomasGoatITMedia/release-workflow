@@ -18,9 +18,11 @@ jobs:
           ssh-private-key: ${{ secrets.DOWNSTREAM_MERGE_SECRET }}
       - uses: actions/checkout@v4
         with:
+          ref: main
+      - uses: actions/checkout@v4
+        with:
           ref: develop
       - name: Merge main into develop
         run: |
-          git fetch origin main
           git merge main
           git push
