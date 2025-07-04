@@ -25,12 +25,12 @@ jobs:
       - name: Checkout main branch
         uses: actions/checkout@v4
         with:
-          ref: origin/main
+          ref: main
      
       - name: Checkout develop branch
         uses: actions/checkout@v4
         with:
-          ref: origin/develop
+          ref: develop
 
       - name: Fetch all branches
         run: git fetch --all
