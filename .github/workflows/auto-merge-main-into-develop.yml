@@ -50,4 +50,4 @@ jobs:
           git merge --no-ff origin/main --strategy=ort --allow-unrelated-histories -m "Merge branch 'main' into 'develop'" || { echo "Merge conflict detected"; git status; git diff; exit 1; }
 
       - name: Push changes to develop
-        run: git push origin develop
+        run: git push origin develop --admin
