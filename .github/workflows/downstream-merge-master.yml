@@ -16,10 +16,15 @@ jobs:
       - uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.DOWNSTREAM_MERGE_SECRET }}
+      - name: Configure git
+        run: |
+          git config user.name "GoatITMediaMachineUser"
+          git config user.email "thomas+github-machine@goatitmedia.nl"
       - uses: actions/checkout@v4
         with:
           ref: develop
       - name: Merge main into develop
         run: |
-          git merge origin/main
+          git fetch origin/main
+          git merge main
           git push
