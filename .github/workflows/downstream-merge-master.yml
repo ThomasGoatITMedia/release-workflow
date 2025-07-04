@@ -15,10 +15,11 @@ jobs:
     steps:
       - uses: webfactory/ssh-agent@v0.9.0
         with:
-            ssh-private-key: ${{ secrets.DOWNSTREAM_MERGE_SECRET }}
-      - name: Merge develop into main
+          ssh-private-key: ${{ secrets.DOWNSTREAM_MERGE_SECRET }}
+      - uses: actions/checkout@v4
+        with:
+          ref: develop
+      - name: Merge main into develop
         run: |
-          git checkout main
-          git pull
-          git merge origin/develop
+          git merge origin/main
           git push
