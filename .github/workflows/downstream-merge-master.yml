@@ -16,17 +16,41 @@ jobs:
       - uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.DOWNSTREAM_MERGE_SECRET }}
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-      - uses: actions/checkout@v4
-        with:
-          ref: develop
+      
       - name: Configure git
         run: |
           git config --global user.name "GoatITMediaMachineUser"
           git config --global user.email "thomas+github-machine@goatitmedia.nl"
-      - name: Merge main into develop
+      
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+     
+      - name: Checkout develop branch
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Clean workspace
         run: |
-          git merge origin/main --allow-unrelated-histories
-          git push --force-with-lease
+          # Remove all untracked files and directories
+          git clean -fdx
+          # Reset any local changes
+          git reset --hard
+
+      - name: Merge main into develop
+        id: merge
+        run: |
+          git merge --no-ff origin/main --strategy=ort --allow-unrelated-histories -m "Merge branch 'main' into 'develop'" || { echo "Merge conflict detected"; git status; git diff; exit 1; }
+
+      - name: Push changes to develop
+        run: | 
+          git config --global user.name "GoatITMediaMachineUser"
+          git config --global user.email "thomas+github-machine@goatitmedia.nl"
+          git push origin develop
