@@ -1,0 +1,24 @@
+name: Downstream merge master PR
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+jobs:
+  pull-request:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: setup SSH
+        run: |
+          ssh-add - <<< "${DOWNSTREAM_MERGE_SECRET}"
+      - name: Merge develop into main
+        run: |
+          git checkout main
+          git pull
+          git merge origin/develop
+          git push
