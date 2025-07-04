@@ -1,4 +1,4 @@
-name: Downstream merge master PR
+name: Auto merge main into develop
 
 on:
   pull_request:
