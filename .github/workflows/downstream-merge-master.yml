@@ -45,4 +45,9 @@ jobs:
       - name: Merge main into develop
         id: merge
         run: |
-          git merge --no-ff origin/main --strategy=ort --allow-unrelated-histories main -m "Merge branch 'main' into 'develop'" || { echo "Merge conflict detected"; git status; git diff; exit 1; }
+          git merge --no-ff origin/main --strategy=ort --allow-unrelated-histories -m "Merge branch 'main' into 'develop'" || { echo "Merge conflict detected"; git status; git diff; exit 1; }
+
+      - name: Push changes to develop
+        run: git push origin develop
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
