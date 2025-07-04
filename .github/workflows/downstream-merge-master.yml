@@ -17,21 +17,23 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.DOWNSTREAM_MERGE_SECRET }}
       
-      - name: Checkout main branch
-        uses: actions/checkout@v4
-        with:
-          ref: main
-
-      - name: Fetch all branches
-        run: git fetch --all
-      
       - name: Configure git
         run: |
           git config --global user.name "GoatITMediaMachineUser"
           git config --global user.email "thomas+github-machine@goatitmedia.nl"
       
-      - name: Checkout develop
-        run: git checkout develop
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: origin/main
+     
+      - name: Checkout develop branch
+        uses: actions/checkout@v4
+        with:
+          ref: origin/develop
+
+      - name: Fetch all branches
+        run: git fetch --all
 
       - name: Clean workspace
         run: |
@@ -43,5 +45,4 @@ jobs:
       - name: Merge main into develop
         id: merge
         run: |
-          git merge --no-ff origin/main --strategy=ort --allow-unrelated-histories -m "Merge branch 'main' into 'develop'" || { echo "Merge conflict detected"; git status; git diff; exit 1; }
-          
+          git merge --no-ff origin/main --strategy=ort --allow-unrelated-histories main -m "Merge branch 'main' into 'develop'" || { echo "Merge conflict detected"; git status; git diff; exit 1; }
