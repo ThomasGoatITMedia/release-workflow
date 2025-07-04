@@ -24,5 +24,5 @@ jobs:
           ref: develop
       - name: Merge main into develop
         run: |
-          git merge main
+          git merge origin/main
           git push
